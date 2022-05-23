@@ -15,7 +15,7 @@ class AddNumberAndAdminIDToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('admin_id');
-            $table->integer('phone_number');
+            $table->string('phone_number');
         });
     }
 
