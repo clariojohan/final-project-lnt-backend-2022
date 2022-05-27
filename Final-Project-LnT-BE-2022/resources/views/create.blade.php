@@ -1,4 +1,3 @@
-{{-- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,30 +6,35 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
-    <title>Add Book</title>
+    <title>Add Item</title>
 </head>
 
 <body>
-    <form class="p-5" action="{{route('createBook')}}" method="POST" enctype="multipart/form-data">
+    <form class="p-5" action="{{route('createItem')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="input-book-title">Book Title</label>
-            <input type="text" name="title" minlength="5" maxlength="20" class="form-control" id="input-book-title" />
+            <label for="input-item-category">Category</label>
+            <input type="text" name="category" class="form-control" id="input-item-category" />
         </div>
 
         <div class="form-group">
-            <label for="input-book-author">Book Author</label>
-            <input type="text" name="author" minlength="5" maxlength="20" class="form-control" id="input-book-author" />
+            <label for="input-item-name">Item Name</label>
+            <input type="text" name="itemName" class="form-control" id="input-item-name" />
         </div>
 
         <div class="form-group">
-            <label for="input-book-pages">Number of Pages</label>
-            <input type="number" name="pages" min="1" class="form-control" id="input-book-pages" />
+            <label for="input-item-price">Item Price</label>
+            <input type="text" name="itemPrice" class="form-control" id="input-item-price" />
         </div>
 
         <div class="form-group">
-            <label for="input-book-year">Book Publish Year</label>
-            <input type="number" name="year" min="2000" max="2021" class="form-control" id="input-book-year" />
+            <label for="input-item-quantity">Item Quantity</label>
+            <input type="number" name="itemQuantity" class="form-control" id="input-item-quantity" />
+        </div>
+
+        <div class="form-group">
+            <label for="input-item-image">Item Image</label>
+            <input type="file" name="itemImage" class="form-control" id="input-item-image" accept="image/*" />
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -43,4 +47,4 @@
     </script>
 </body>
 
-</html> --}}
+</html>

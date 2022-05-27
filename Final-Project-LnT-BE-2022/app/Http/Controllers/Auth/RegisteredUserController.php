@@ -33,17 +33,25 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // dibawah ini, pakai name di blade.php
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name' => ['required', 'string', 'min:3', 'max:40'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'ends_with:@gmail.com'],
+            'password' => ['required','string', 'confirmed', 'min:6', 'max:12', Rules\Password::defaults()],
+            'phone_number' => ['required', 'string', 'max:255', 'starts_with:08'],
         ]);
-
+        
+        // dibawah ini, pakai nama column di db
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone_number' => $request->phone_number
         ]);
+
+        // kalau error, berarti phone_number di bagian user models blom ditambahin
+        // kalau User::create itu, misal kita pengen tahu asalnya dmna tingga liat di paling atas
+        // dia use apa
 
         event(new Registered($user));
 

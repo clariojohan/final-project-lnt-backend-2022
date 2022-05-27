@@ -19,7 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->string('itemName');         #required string | 5 s/d 80 alphabet
             $table->integer('itemPrice');       #required integer | start with "Rp."
             $table->integer('itemQuantity');    #required integer | only use numbers
-            $table->string('itemImage');        # using URL?
+            $table->string('itemImage');        # using file path
             $table->timestamps();
         });
     }
