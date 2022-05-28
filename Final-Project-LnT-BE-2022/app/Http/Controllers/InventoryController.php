@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Inventory; // jangan lupa tambahin Inventory Modelnya (di module belum ada dikasih tau)
+use App\Models\Category;
 
 class InventoryController extends Controller
 {
     public function viewCreate(){ // function untuk menampilkan page untuk add item
-        return view('create');
+        $categories = Category::all();
+        return view('create', compact('categories'));
     }
     
     public function create(Request $request){ // function untuk melakukan post request add item
@@ -19,6 +21,7 @@ class InventoryController extends Controller
         // -	Jumlah Barang (harus menggunakan angka), required integer
         // -	Foto Barang 
         
+        // dibawah ini, pakai name di blade.php
         $request->validate([
             'category' => ['required', 'string'],
             'itemName' => ['required', 'string', 'min:5', 'max:80'],
@@ -33,31 +36,24 @@ class InventoryController extends Controller
         // https://www.codewall.co.uk/upload-image-to-database-using-laravel-tutorial-with-example/
         // https://www.tutsmake.com/laravel-8-image-upload-tutorial/
         
-        // dd(public_path() . '/images');
+        // dd(public_path() . '/images'); --> untuk debug
         $imageName = $request->itemImage->getClientOriginalName();
-        // dd($imageName);
+        // dd($imageName); --> untuk debug
         $path = $request->itemImage->storeAs('images', $imageName);
 
         // $path = $request->itemImage->store(public_path() . '/images/', $imageName);
         
         // https://stackoverflow.com/questions/60501302/what-is-difference-between-store-and-storeas-function-in-laravel
         
-        // dd($request->itemImage);
-        // $save = new Image;
-        
-        // $save->name = $imageName;
-        // $save->path = $path;
-        
-        // $save->save();
-        
-        // dd($path);
+        // dd($request->itemImage); --> untuk debug
 
+        // dibawah ini, pakai nama column di db
         Inventory::create([
-            'category' => $request->category,
             'itemName' => $request->itemName,
             'itemPrice' => $request->itemPrice, 
-            'itemQuantity' => $request->itemQuantity, 
-            'itemImage' => $path
+            'itemQuantity' => $request->itemQuantity,
+            'itemImage' => $path,
+            'categoryID' => $request->category
         ]);
         return redirect('view');
     }

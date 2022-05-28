@@ -15,7 +15,7 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('category');         #required string
+            // $table->string('category');      #required string -> ini akhirnya dipindah ke tabel sendiri u/ relationship
             $table->string('itemName');         #required string | 5 s/d 80 alphabet
             $table->integer('itemPrice');       #required integer | start with "Rp."
             $table->integer('itemQuantity');    #required integer | only use numbers
