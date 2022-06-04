@@ -9,7 +9,7 @@ use App\Models\Category;
 class InventoryController extends Controller
 {
     public function viewCreate(){ // function untuk menampilkan page untuk add item
-        $categories = Category::all();
+        $categories = Category::all(); // variable untuk menampung semua categories yang ada di tabel categories
         return view('create', compact('categories'));
     }
     
@@ -23,7 +23,6 @@ class InventoryController extends Controller
         
         // dibawah ini, pakai name di blade.php
         $request->validate([
-            'category' => ['required', 'string'],
             'itemName' => ['required', 'string', 'min:5', 'max:80'],
             'itemPrice' => ['required','integer'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
             'itemQuantity' => ['required', 'integer'],
@@ -55,6 +54,24 @@ class InventoryController extends Controller
             'itemImage' => $path,
             'categoryID' => $request->category
         ]);
+        return redirect('view');
+    }
+
+    public function viewCreateCategory(){ // function untuk menampilkan page untuk add category
+        return view('create-category');
+    }
+    
+    public function createCategory(Request $request){ // function untuk melakukan post request add category
+        
+        // dibawah ini, pakai name di blade.php
+        $request->validate([
+            'categoryName' => ['required', 'string']
+        ]);
+
+        Category::create([
+            'categoryName' => $request->categoryName
+        ]);
+
         return redirect('view');
     }
 
@@ -98,3 +115,7 @@ class InventoryController extends Controller
         return redirect('view');
     }
 }
+
+
+
+

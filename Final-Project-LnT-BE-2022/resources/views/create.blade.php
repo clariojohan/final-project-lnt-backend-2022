@@ -16,7 +16,7 @@
             <label for="input-item-category">Category</label>
             <select name="category" id="input-item-category">
                 @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->categoryName}}</option>
+                <option value="{{$category->id}}">{{$category->categoryName}}</option>
                 @endforeach
             </select>
             {{-- <input type="text" name="category" class="form-control" id="input-item-category" /> --}}
@@ -44,6 +44,7 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <a class="p-5" href="/view"><button type="text" class="btn btn-primary">Back to Catalog</button></a>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>

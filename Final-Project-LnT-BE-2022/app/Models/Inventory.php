@@ -9,7 +9,7 @@ class Inventory extends Model
 {
     // use HasFactory;
     protected $fillable = [
-        'itemName', 'itemPrice', 'itemQuantity', 'itemImage','categoryID',
+        'itemName', 'itemPrice', 'itemQuantity', 'itemImage','categoryID'
     ];
     
     public function categories(){
