@@ -22,7 +22,13 @@ class isAdmin
             return $next($request);
         }
         else {
-            return redirect('/view');
+            $message = "Only Admin can access this page";
+            // echo "<script type='text/javascript'>alert('$message');</script>";
+            // return redirect('/view');
+            echo "<script>
+            alert('$message');
+            window.location.href='/view';
+            </script>";
         }
     }
 }

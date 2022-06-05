@@ -8,6 +8,7 @@ use App\Models\Category;
 
 class InventoryController extends Controller
 {
+    // --------------------------------------------CREATE-------------------------------------------------
     public function viewCreate(){ // function untuk menampilkan page untuk add item
         $categories = Category::all(); // variable untuk menampung semua categories yang ada di tabel categories
         return view('create', compact('categories'));
@@ -38,7 +39,7 @@ class InventoryController extends Controller
         // dd(public_path() . '/images'); --> untuk debug
         $imageName = $request->itemImage->getClientOriginalName();
         // dd($imageName); --> untuk debug
-        $path = $request->itemImage->storeAs('images', $imageName);
+        $path = $request->itemImage->storeAs('/images', $imageName);
 
         // $path = $request->itemImage->store(public_path() . '/images/', $imageName);
         
@@ -78,32 +79,39 @@ class InventoryController extends Controller
     // --------------------------------------------READ---------------------------------------------------
     public function viewInventory(){ // function untuk menampilkan page view item
         $items = Inventory::all();
-        return view('view')->withItems($items);
+        $categories = Category::all();
+        // $images = Storage::url("/storage/app/{$images->filename}");
+        //https://www.devopsschool.com/blog/how-to-store-and-retrieve-image-from-the-database-in-laravel
+        return view('view', compact('items', 'categories'));
     }
 
     
     // --------------------------------------------UPDATE---------------------------------------------------
     public function viewUpdate($id){ // function untuk menampilkan page update / edit item
+        $categories = Category::all();
         $editItem = Inventory::find($id);
-        return view('update', ['item' => $editItem]);
+        return view('update', ['item' => $editItem], compact('categories'));
     }
 
     public function update(Request $request, $id){ // function untuk melakukan post request update item
         $item = Inventory::where('id', '=', $id)->first();
 
-        // $item->validate([
-        //     'category' => ['required', 'string'],
-        //     'itemName' => ['required', 'string', 'min:5', 'max:80'],
-        //     'itemPrice' => ['required','integer'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
-        //     'itemQuantity' => ['required', 'integer'],
-        // ]);
+        $request->validate([
+            'itemName' => ['required', 'string', 'min:5', 'max:80'],
+            'itemPrice' => ['required','integer'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
+            'itemQuantity' => ['required', 'integer'],
+            'itemImage' => ['image', 'mimes:jpeg,png,jpg,gif,svg']
+        ]);
+        
+        $imageName = $request->itemImage->getClientOriginalName();
+        $path = $request->itemImage->storeAs('/images', $imageName);
 
         $item->update([
-            'category' => $request->category,
             'itemName' => $request->itemName,
             'itemPrice' => $request->itemPrice, 
             'itemQuantity' => $request->itemQuantity, 
-            'itemImage' => $request->itemImage
+            'itemImage' => $path,
+            'categoryID' => $request->category
         ]);
 
         return redirect('view');

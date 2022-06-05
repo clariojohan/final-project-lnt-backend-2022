@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use App\Providers\RouteServiceProvider; // HOME default is /dashboard, we need to change it to /view
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +57,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // redirect after register to view
         return redirect(RouteServiceProvider::HOME);
     }
 }
