@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::get('/view', 'App\Http\Controllers\InventoryController@viewInventory')->middleware(['auth'])->name('view');
 
 Route::group(['middleware'=>'auth', 'middleware'=>'isAdmin'], function () {
+    Route::get('/admin', 'App\Http\Controllers\InventoryController@viewInventory')->middleware(['auth'])->name('admin');
     Route::get('/create', 'App\Http\Controllers\InventoryController@viewCreate');
     Route::post('/create', 'App\Http\Controllers\InventoryController@create')->name('createItem');
     Route::get('/create-category', 'App\Http\Controllers\InventoryController@viewCreateCategory');

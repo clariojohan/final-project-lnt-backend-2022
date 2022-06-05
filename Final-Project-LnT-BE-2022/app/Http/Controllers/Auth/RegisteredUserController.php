@@ -58,6 +58,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // redirect after register to view
+        // https://laracasts.com/discuss/channels/laravel/how-to-make-breeze-redirect-to-home-or-custom-page-after-registration-and-login
         return redirect(RouteServiceProvider::HOME);
     }
 }
