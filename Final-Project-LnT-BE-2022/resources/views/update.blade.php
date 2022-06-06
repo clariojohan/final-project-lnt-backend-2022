@@ -13,11 +13,20 @@
     <form class="p-5" action="{{route('updateItem', ['id' => $item->id])}}" method="POST" enctype="multipart/form-data">
         @csrf @method('patch')
 
+        {{-- <script>
+            alert({{$item->categoryID}});
+        </script> --}}
+
         <div class="form-group">
             <label for="input-item-category">Category</label>
             <select name="category" id="input-item-category">
                 @foreach ($categories as $category)
-                <option value="{{$category->id}}">{{$category->categoryName}}</option>
+                {{--
+                basiclly i use ternary to give "selected" parameter to which ever category is selected by the user
+                --}}
+                <option value="{{ $category->id }}" {{ $item->categoryID == $category->id ? 'selected' : ''}}>
+                    {{ $category->categoryName }}
+                </option>
                 @endforeach
             </select>
         </div>

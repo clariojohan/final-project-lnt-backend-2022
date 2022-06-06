@@ -15,6 +15,17 @@
                     <x-nav-link :href="route('view')" :active="request()->routeIs('view')">
                         {{ __('Catalog') }}
                     </x-nav-link>
+                    {{--
+                    make a condition if it is admin show the create and create category navbar menu, else hides it
+                    --}}
+                    @if (Auth::user()->admin_id != NULL)
+                    <x-nav-link :href="route('createItem')" :active="request()->routeIs('create')">
+                        {{ ('Create') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('createCategory')" :active="request()->routeIs('create-category')">
+                        {{ ('Create Category') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -73,6 +84,14 @@
             <x-responsive-nav-link :href="route('view')" :active="request()->routeIs('view')">
                 {{ __('Catalog') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->admin_id != NULL)
+            <x-responsive-nav-link :href="route('createItem')" :active="request()->routeIs('create')">
+                {{ ('Create') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('createCategory')" :active="request()->routeIs('create-category')">
+                {{ ('Create Category') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

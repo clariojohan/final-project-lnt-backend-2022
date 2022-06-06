@@ -25,37 +25,42 @@ class InventoryController extends Controller
         // dibawah ini, pakai name di blade.php
         $request->validate([
             'itemName' => ['required', 'string', 'min:5', 'max:80'],
-            'itemPrice' => ['required','integer'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
-            'itemQuantity' => ['required', 'integer'],
+            'itemPrice' => ['required','integer', 'min:1'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
+            'itemQuantity' => ['required', 'integer', 'min:1'],
             'itemImage' => ['image', 'mimes:jpeg,png,jpg,gif,svg']
             // bisa juga dalam bentuk spt dibawah ini :
             // 'itemImage' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             // https://stackoverflow.com/questions/40434642/laravel-validation-difference-between-numeric-and-integer
         ]);
-        
-        // https://www.codewall.co.uk/upload-image-to-database-using-laravel-tutorial-with-example/
-        // https://www.tutsmake.com/laravel-8-image-upload-tutorial/
-        
-        // dd(public_path() . '/images'); --> untuk debug
-        $imageName = $request->itemImage->getClientOriginalName();
-        // dd($imageName); --> untuk debug
-        $path = $request->itemImage->storeAs('/images', $imageName);
 
-        // $path = $request->itemImage->store(public_path() . '/images/', $imageName);
-        
-        // https://stackoverflow.com/questions/60501302/what-is-difference-between-store-and-storeas-function-in-laravel
-        
-        // dd($request->itemImage); --> untuk debug
+        if ($request->hasFile('itemImage')) {
+            // https://www.codewall.co.uk/upload-image-to-database-using-laravel-tutorial-with-example/
+            // https://www.tutsmake.com/laravel-8-image-upload-tutorial/
+            
+            // dd(public_path() . '/images'); --> untuk debug
+            $imageName = $request->itemImage->getClientOriginalName();
+            // dd($imageName); --> untuk debug
+            $path = $request->itemImage->storeAs('/public/images', $imageName);
 
-        // dibawah ini, pakai nama column di db
-        Inventory::create([
-            'itemName' => $request->itemName,
-            'itemPrice' => $request->itemPrice, 
-            'itemQuantity' => $request->itemQuantity,
-            'itemImage' => $path,
-            'categoryID' => $request->category
-        ]);
-        return redirect('view');
+            // $path = $request->itemImage->store(public_path() . '/images/', $imageName);
+            
+            // https://stackoverflow.com/questions/60501302/what-is-difference-between-store-and-storeas-function-in-laravel
+            
+            // dd($request->itemImage); --> untuk debug
+
+            // dibawah ini, pakai nama column di db
+            Inventory::create([
+                'itemName' => $request->itemName,
+                'itemPrice' => $request->itemPrice, 
+                'itemQuantity' => $request->itemQuantity,
+                'itemImage' => $imageName,
+                'categoryID' => $request->category
+            ]);
+            return redirect('view');
+        }
+        else {
+            echo "No file selected";
+        }
     }
 
     public function viewCreateCategory(){ // function untuk menampilkan page untuk add category
@@ -80,6 +85,7 @@ class InventoryController extends Controller
     public function viewInventory(){ // function untuk menampilkan page view item
         $items = Inventory::all();
         $categories = Category::all();
+        // $itemID = Inventory::find($id);
         // $images = Storage::url("/storage/app/{$images->filename}");
         //https://www.devopsschool.com/blog/how-to-store-and-retrieve-image-from-the-database-in-laravel
         return view('view', compact('items', 'categories'));
@@ -90,6 +96,12 @@ class InventoryController extends Controller
     public function viewUpdate($id){ // function untuk menampilkan page update / edit item
         $categories = Category::all();
         $editItem = Inventory::find($id);
+
+        // if you want to get the category by FK in inventories table, you can use this:
+        // $selectedCategory = Category::find($editItem->categoryID);
+        // echo $selectedCategory->categoryName;
+        // echo $selectedCategory->id;
+
         return view('update', ['item' => $editItem], compact('categories'));
     }
 
@@ -98,23 +110,29 @@ class InventoryController extends Controller
 
         $request->validate([
             'itemName' => ['required', 'string', 'min:5', 'max:80'],
-            'itemPrice' => ['required','integer'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
-            'itemQuantity' => ['required', 'integer'],
+            'itemPrice' => ['required','integer', 'min:1'], // Rp. nya kita tampilkan pake HTML saja, karena input berupa int bukan string
+            'itemQuantity' => ['required', 'integer', 'min:1'],
             'itemImage' => ['image', 'mimes:jpeg,png,jpg,gif,svg']
         ]);
         
-        $imageName = $request->itemImage->getClientOriginalName();
-        $path = $request->itemImage->storeAs('/images', $imageName);
+        if ($request->hasFile('itemImage')) {
+            $imageName = $request->itemImage->getClientOriginalName();
+            $path = $request->itemImage->storeAs('/public/images', $imageName);
 
-        $item->update([
-            'itemName' => $request->itemName,
-            'itemPrice' => $request->itemPrice, 
-            'itemQuantity' => $request->itemQuantity, 
-            'itemImage' => $path,
-            'categoryID' => $request->category
-        ]);
+            $item->update([
+                'itemName' => $request->itemName,
+                'itemPrice' => $request->itemPrice, 
+                'itemQuantity' => $request->itemQuantity, 
+                'itemImage' => $imageName,
+                'categoryID' => $request->category
+            ]);
+    
+            return redirect('view');
+        }
+        else {
+            echo "No file selected";
+        }
 
-        return redirect('view');
     }
 
     // --------------------------------------------DELETE---------------------------------------------------
