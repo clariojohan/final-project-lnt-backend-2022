@@ -23,6 +23,7 @@
                 @foreach ($categories as $category)
                 {{--
                 basiclly i use ternary to give "selected" parameter to which ever category is selected by the user
+                https://laracasts.com/discuss/channels/laravel/how-can-i-set-the-default-value-laravel-select-element-1
                 --}}
                 <option value="{{ $category->id }}" {{ $item->categoryID == $category->id ? 'selected' : ''}}>
                     {{ $category->categoryName }}
