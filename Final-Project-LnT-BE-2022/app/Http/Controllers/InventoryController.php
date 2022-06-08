@@ -140,6 +140,16 @@ class InventoryController extends Controller
         Inventory::destroy($id);
         return redirect('view');
     }
+
+    public function viewCreateInvoice(){
+        $items = Inventory::all();
+        $categories = Category::all();
+        return view('invoice', compact('items', 'categories'));
+    }
+
+    public function createInvoice() {
+
+    }
 }
 
 

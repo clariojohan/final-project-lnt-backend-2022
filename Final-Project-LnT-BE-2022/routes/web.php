@@ -21,7 +21,11 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth'])->name('dashboard');
 
-Route::get('/view', 'App\Http\Controllers\InventoryController@viewInventory')->middleware(['auth'])->name('view');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/view', 'App\Http\Controllers\InventoryController@viewInventory')->name('view');
+    Route::get('/invoice', 'App\Http\Controllers\InventoryController@viewCreateInvoice');
+    Route::post('/invoice', 'App\Http\Controllers\InventoryController@createInvoice')->name('createInvoice');
+});
 
 Route::group(['middleware'=>'auth', 'middleware'=>'isAdmin'], function () {
     Route::get('/create', 'App\Http\Controllers\InventoryController@viewCreate');
